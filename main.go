@@ -32,12 +32,8 @@ path {
     fill: none;
 }
 
-.data1 {
+.data {
     stroke: green;
-}
-
-.data2 {
-    stroke: orange;
 }
 
 .axis {
@@ -130,7 +126,9 @@ graph.append("svg:g")
     .attr("transform", "translate(-10,0)")
     .call(yAxis);
 
-graph.append("svg:path").attr("d", line(DATA[0])).attr("class", "data");
+graph.append("svg:path")
+    .attr("d", line(DATA[0]))
+    .attr("class", "data");
 
         </script>
 
