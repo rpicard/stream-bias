@@ -5,11 +5,6 @@ import (
     "errors"
 )
 
-// we want to get n bytes from a random keystream for the stream ciphers
-type RandomKeyStreamer interface {
-    RandomKeyStream(numBytes int)
-}
-
 type StreamCounter struct {
     Length    int
     Count   [][256]int64 // each position has a 256 length slice

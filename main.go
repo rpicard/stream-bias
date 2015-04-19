@@ -5,6 +5,15 @@ import (
     "encoding/json"
 )
 
+// we want to get n bytes from a random keystream for the stream ciphers
+type RandomKeyStreamer interface {
+    RandomKeyStream(numBytes int)
+}
+
+// the stream ciphers will use this type
+type StreamCipher struct {
+    Name    string
+}
 
 func main() {
     sc := NewStreamCounter(5)

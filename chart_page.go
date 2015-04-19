@@ -84,62 +84,71 @@ path {
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 
-        <div id="graph" class="aGraph" style="position:absolute;top:0px;left:0; float:left;"></div>
-
         <script type="text/javascript">
 
 var DATA = {{ .JsonData }};
 
+for (var i = 0; i < DATA.length; i++) {
 
-var m = [80, 80, 80, 80]; // margins
-var w = 1000 - m[1] - m[3]; // width
-var h = 400 - m[0] - m[2]; // height
+    var m = [80, 80, 80, 80]; // margins
+    var w = 1000 - m[1] - m[3]; // width
+    var h = 400 - m[0] - m[2]; // height
 
-var x = d3.scale.linear()
-    .domain([0, DATA[0].length])
-    .range([0, w]);
+    var x = d3.scale.linear()
+        .domain([0, DATA[i].length])
+        .range([0, w]);
 
-var y = d3.scale.linear()
-    .domain([0, d3.max(DATA[0])])
-    .range([h, 0]);
+    var y = d3.scale.linear()
+        .domain([0, d3.max(DATA[i])])
+        .range([h, 0]);
 
-var line = d3.svg.line()
-    .x(function(d,i) {
-        return x(i);
-    })
-    .y(function(d) {
-        return y(d);
-    });
+    var line = d3.svg.line()
+        .x(function(d,i) {
+            return x(i);
+        })
+        .y(function(d) {
+            return y(d);
+        });
 
-var graph = d3.select("#graph").append("svg:svg")
-    .attr("width", w + m[1] + m[3])
-    .attr("height", h + m[0] + m[2])
-    .append("svg:g")
-    .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+    var graph = d3.select("body")
+        .append("div")
+        .attr("class", "graph" + i)
 
-var xAxis = d3.svg.axis()
-    .scale(x)
-    .tickSize(-h)
-    .tickSubdivide(1);
+    d3.select(".graph" + i)
+        .insert("h2")
+        .text("Position " + (i + 1))
 
-graph.append("svg:g")
-    .attr("class", "x axis")
-    .attr("transform", "translate(0," + h + ")")
-    .call(xAxis);
+    graph = graph.append("svg:svg")
+        .attr("width", w + m[1] + m[3])
+        .attr("height", h + m[0] + m[2])
+        .append("svg:g")
+        .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
-var yAxis = d3.svg.axis()
-    .scale(y)
-    .ticks(6)
-    .orient("left");
+    var xAxis = d3.svg.axis()
+        .scale(x)
+        .tickSize(-h)
+        .tickSubdivide(1);
 
-graph.append("svg:g")
-    .attr("class", "y axis")
-    .attr("transform", "translate(-10,0)")
-    .call(yAxis);
+    graph.append("svg:g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + h + ")")
+        .call(xAxis);
 
-graph.append("svg:path")
-    .attr("d", line(DATA[0]))
-    .attr("class", "data");
+    var yAxis = d3.svg.axis()
+        .scale(y)
+        .ticks(6)
+        .orient("left");
+
+    graph.append("svg:g")
+        .attr("class", "y axis")
+        .attr("transform", "translate(-10,0)")
+        .call(yAxis);
+
+    graph.append("svg:path")
+        .attr("d", line(DATA[i]))
+        .attr("class", "data");
+
+}
 
         </script>
 
