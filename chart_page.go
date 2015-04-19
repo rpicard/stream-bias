@@ -10,6 +10,10 @@ type ChartPage struct {
     JsonData    string
 }
 
+func NewChartPage(jsn string) *ChartPage {
+    return &ChartPage{JsonData: jsn}
+}
+
 // print the generated HTML for this page
 func (page *ChartPage) PrintHtml() {
 

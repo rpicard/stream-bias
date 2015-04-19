@@ -16,7 +16,7 @@ func main() {
         log.Fatal(err)
     }
 
-    page := &ChartPage{JsonData: string(jsn)}
+    page := NewChartPage(string(jsn))
 
     page.PrintHtml()
 }
