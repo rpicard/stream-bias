@@ -16,8 +16,11 @@ type StreamCipher struct {
 }
 
 func main() {
-    sc := NewStreamCounter(5)
-    sc.AddBytes([]byte{0x00, 0x01, 0x03, 0x05, 0x01})
+    sc := NewStreamCounter(256)
+
+    streamer := NewRc4Streamer()
+
+    sc.AddBytes(streamer.RandomKeyStream)
 
     jsn, err := json.Marshal(sc.Count)
 
