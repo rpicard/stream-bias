@@ -10,17 +10,14 @@ type RandomKeyStreamer interface {
     RandomKeyStream(numBytes int)
 }
 
-// the stream ciphers will use this type
-type StreamCipher struct {
-    Name    string
-}
-
 func main() {
     sc := NewStreamCounter(256)
 
     streamer := NewRc4Streamer()
 
-    sc.AddBytes(streamer.RandomKeyStream)
+    for i := 0; i < 10000000; i++ {
+        sc.AddBytes(streamer.RandomKeyStream(256))
+    }
 
     jsn, err := json.Marshal(sc.Count)
 

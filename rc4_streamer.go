@@ -7,7 +7,7 @@ import (
 )
 
 type Rc4Streamer struct {
-    *StreamCipher
+    Name    string
 }
 
 func NewRc4Streamer() *Rc4Streamer {
@@ -15,7 +15,7 @@ func NewRc4Streamer() *Rc4Streamer {
 }
 
 // generate a random key and return the first numBytes of keystream
-func (sc *Rc4Streamer) RandomKeyStream(numBytes int) {
+func (sc *Rc4Streamer) RandomKeyStream(numBytes int) []byte {
 
     // hard-coding the key length for now, probably should be an option
     randomKey := make([]byte, 128)
