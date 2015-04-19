@@ -20,41 +20,61 @@ func main() {
 <html lang="en">
     <head>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-
         <style>
 
-.chart div {
-    font: 10px sans-serif;
-    background-color: steelblue;
-    text-align: right;
-    padding: 3px;
-    margin: 1px;
-    color: white;
+.chart rect {
+    fill: steelblue;
 }
 
-        <style>
+.chart text {
+    fill: white;
+    font: 10px sans-serif;
+    text-anchor: end;
+}
+        </style>
 
     </head>
 
     <body>
 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+
+        <svg class="chart"></svg>
+
         <script type="text/javascript">
 
 var THE_DATA = {{ .JsonData }};
 
-// create one chart
-var chart = d3.select("body")
-    .append("div")
-        .attr("class", "chart");
+var width = 960,
+    height = 500;
 
-chart.selectAll("div")
+var barWidth = width / THE_DATA[0].length;
+
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+var chart = d3.select(".chart")
+    .attr("width", width)
+    .attr("height", height);
+
+var bar = chart.selectAll("g")
     .data(THE_DATA[0])
-    .enter().append("div")
-        .style("width", function(d) { return d * 10 + "px"; })
-        .text(function(d) { return d; });
+    .enter().append("g")
+    .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; });
+
+bar.append("rect")
+    .attr("y", function(d) { return y(d); })
+    .attr("height", function(d) { return height - y(d) })
+    .attr("width", barWidth - 1)
+
+bar.append("text")
+    .attr("x", barWidth / 2)
+    .attr("y", function(d) { return y(d) + 3; })
+    .attr("dy", ".75em")
+    .text(function(d) { return d; });
 
         </script>
+
     </body>
 </html>
 `
