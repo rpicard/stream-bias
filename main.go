@@ -19,7 +19,7 @@ func main() {
 <!DOCTYPE html>
 <html lang="en">
     <head>
-
+    <!-- lots of credit for the d3 stuff goes to http://bl.ocks.org/benjchristensen/2580640 ->
         <style>
 
 body {
