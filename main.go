@@ -1,30 +1,31 @@
 package main
 
 import (
-    "fmt"
+    "os"
+    "log"
+    "encoding/json"
+    "text/template"
 )
+
+type ChartPage struct {
+    JsonData    string
+}
 
 func main() {
     sc := NewStreamCounter(5)
     sc.AddBytes([]byte{0x00, 0x01, 0x03, 0x05, 0x01})
 
-    for position, positionMap := range sc.Count {
+    jsn, err := json.Marshal(sc.Count)
 
-        fmt.Printf("Position %d\n\n", position)
-
-        for i := 0; i < 256; i++ {
-
-            fmt.Printf("%x", i)
-
-            for j := 0; int64(j) < positionMap[byte(i)]; j++ {
-                fmt.Printf(" ")
-            }
-
-            fmt.Printf("|\n")
-
-        }
-
-
+    if err != nil {
+        log.Fatal(err)
     }
 
+    tmpl, err := template.ParseFiles("templates/bias-charts.html")
+
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    _ = tmpl.Execute(os.Stdout, &ChartPage{JsonData: string(jsn)})
 }

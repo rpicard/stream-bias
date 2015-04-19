@@ -12,7 +12,7 @@ type RandomKeyStreamer interface {
 
 type StreamCounter struct {
     Length    int
-    Count   [](map[byte]int64) // each position has a map of bytes => count
+    Count   [][256]int64 // each position has a 256 length slice
 }
 
 func NewStreamCounter(length int) *StreamCounter {
@@ -23,23 +23,7 @@ func NewStreamCounter(length int) *StreamCounter {
     sc.Length = length
 
     // initialize the counter
-    count := make([](map[byte]int64), sc.Length)
-
-    // for each position, make a positionMap
-    for i := 0; i < len(count); i++ {
-
-        // make a map of 256 keys to the initial count of 0
-        positionMap := make(map[byte]int64, 256)
-
-        for j := 0; j < 256; j++ {
-            positionMap[byte(j)] = 0
-        }
-
-        count[i] = positionMap
-    }
-
-
-    sc.Count = count
+    sc.Count = make([][256]int64, sc.Length)
 
     return sc
 }
