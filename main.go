@@ -22,15 +22,53 @@ func main() {
 
         <style>
 
-.chart rect {
-    fill: steelblue;
+body {
+    font-family: "Helvetica Neue", Helvetica;
 }
 
-.chart text {
-    fill: white;
-    font: 10px sans-serif;
-    text-anchor: end;
+/* tell the SVG path to be a thin blue line without any area fill */
+path {
+    stroke-width: 1;
+    fill: none;
 }
+
+.data1 {
+    stroke: green;
+}
+
+.data2 {
+    stroke: orange;
+}
+
+.axis {
+  shape-rendering: crispEdges;
+}
+
+.x.axis line {
+  stroke: lightgrey;
+}
+
+.x.axis .minor {
+  stroke-opacity: .5;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.x.axis text {
+    font-size: 10px;
+}
+
+.y.axis line, .y.axis path {
+  fill: none;
+  stroke: #000;
+}
+
+.y.axis text {
+    font-size: 12px;
+}
+
         </style>
 
     </head>
@@ -39,39 +77,60 @@ func main() {
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 
-        <svg class="chart"></svg>
+        <div id="graph" class="aGraph" style="position:absolute;top:0px;left:0; float:left;"></div>
 
         <script type="text/javascript">
 
-var THE_DATA = {{ .JsonData }};
+var DATA = {{ .JsonData }};
 
-var width = 960,
-    height = 500;
 
-var barWidth = width / THE_DATA[0].length;
+var m = [80, 80, 80, 80]; // margins
+var w = 1000 - m[1] - m[3]; // width
+var h = 400 - m[0] - m[2]; // height
+
+var x = d3.scale.linear()
+    .domain([0, DATA[0].length])
+    .range([0, w]);
 
 var y = d3.scale.linear()
-    .range([height, 0]);
+    .domain([0, d3.max(DATA[0])])
+    .range([h, 0]);
 
-var chart = d3.select(".chart")
-    .attr("width", width)
-    .attr("height", height);
+var line = d3.svg.line()
+    .x(function(d,i) {
+        return x(i);
+    })
+    .y(function(d) {
+        return y(d);
+    });
 
-var bar = chart.selectAll("g")
-    .data(THE_DATA[0])
-    .enter().append("g")
-    .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; });
+var graph = d3.select("#graph").append("svg:svg")
+    .attr("width", w + m[1] + m[3])
+    .attr("height", h + m[0] + m[2])
+    .append("svg:g")
+    .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
-bar.append("rect")
-    .attr("y", function(d) { return y(d); })
-    .attr("height", function(d) { return height - y(d) })
-    .attr("width", barWidth - 1)
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .tickSize(-h)
+    .tickSubdivide(1);
 
-bar.append("text")
-    .attr("x", barWidth / 2)
-    .attr("y", function(d) { return y(d) + 3; })
-    .attr("dy", ".75em")
-    .text(function(d) { return d; });
+graph.append("svg:g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + h + ")")
+    .call(xAxis);
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .ticks(6)
+    .orient("left");
+
+graph.append("svg:g")
+    .attr("class", "y axis")
+    .attr("transform", "translate(-10,0)")
+    .call(yAxis);
+
+graph.append("svg:path").attr("d", line(DATA[0])).attr("class", "data");
 
         </script>
 
