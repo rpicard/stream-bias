@@ -19,7 +19,7 @@ func main() {
         sc.AddBytes(streamer.RandomKeyStream(256))
     }
 
-    jsn, err := json.Marshal(sc.Count)
+    jsn, err := json.Marshal(sc.Probability)
 
     if err != nil {
         log.Fatal(err)
