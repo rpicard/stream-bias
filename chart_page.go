@@ -2,6 +2,7 @@ package main
 
 import (
     "text/template"
+    "encoding/json"
     "log"
     "os"
 )
@@ -10,8 +11,16 @@ type ChartPage struct {
     JsonData    string
 }
 
-func NewChartPage(jsn string) *ChartPage {
-    return &ChartPage{JsonData: jsn}
+func NewChartPage(counter *StreamCounter) *ChartPage {
+
+    // marshal the StreamCounter into JSON
+    jsn, err := json.Marshal(counter)
+
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    return &ChartPage{JsonData: string(jsn)}
 }
 
 // print the generated HTML for this page
@@ -86,7 +95,9 @@ path {
 
         <script type="text/javascript">
 
-var DATA = {{ .JsonData }};
+var STREAMER = {{ .JsonData }};
+
+var DATA = STREAMER["Probability"];
 
 for (var i = 0; i < DATA.length; i++) {
 

@@ -1,8 +1,6 @@
 package main
 
 import (
-    "log"
-    "encoding/json"
 )
 
 // we want to get n bytes from a random keystream for the stream ciphers
@@ -15,17 +13,11 @@ func main() {
 
     streamer := NewRc4Streamer()
 
-    for i := 0; i < 10000000; i++ {
+    for i := 0; i < 1000000; i++ {
         sc.AddBytes(streamer.RandomKeyStream(256))
     }
 
-    jsn, err := json.Marshal(sc.Probability)
-
-    if err != nil {
-        log.Fatal(err)
-    }
-
-    page := NewChartPage(string(jsn))
+    page := NewChartPage(sc)
 
     page.PrintHtml()
 }
