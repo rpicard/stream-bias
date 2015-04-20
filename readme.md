@@ -8,4 +8,5 @@ The interface and such is still in flux, but to test a new cipher you will basic
 * [ ] Give the tool a nice little CLI to set options like random key length, number of samples, etc.
 * [ ] Make it work with multiple different ciphers, letting the use select which to use at run time.
 * [ ] Polish up the information on the generated chart page.
-* [ ] Chart the probability of a byte showing up at a position instead of the number of times that byte showed up.
+* [ ] Add the option to export / import the generated data rather than generating it each time
+* [X] Chart the probability of a byte showing up at a position instead of the number of times that byte showed up.
