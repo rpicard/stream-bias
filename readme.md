@@ -18,7 +18,11 @@ Options:
 
 ## TODO
 
+* [ ] Write script to spin up lots of ec2 spot instances, run this tool and post the resulting .json file to s3
 * [ ] Make the sample generation parallel, and have it take advantage of all cores on the machine.
+
+    I can't even tell if it's doing this at this point. It runs at the same speed on my 4 core machine and an ec2 machine with 36 cores. Slower on a micro instance though.
+
 * [ ] Polish up the information on the generated chart page.
 * [ ] Add the option to import the generated data from one or more json files
 * [X] Give the tool a nice little CLI to set options like random key length, number of samples, etc.
