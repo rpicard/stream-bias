@@ -5,7 +5,9 @@ import (
     "os"
     "log"
     "errors"
+    "sync"
     "strconv"
+    "runtime"
 )
 
 // we want to get n bytes from a random keystream for the stream ciphers
@@ -14,6 +16,9 @@ type RandomKeyStreamer interface {
 }
 
 func main() {
+
+    // set GOMAXPROCS to the number of CPU cores available
+    runtime.GOMAXPROCS(runtime.NumCPU())
 
     app := cli.App("unfair", "chart potential biases in stream cipher keystreams")
 
@@ -25,7 +30,6 @@ func main() {
     app.Spec = "--cipher [--format] [--samples] [--length]"
 
     app.Action = func() {
-        sc := NewStreamCounter(256)
 
         var streamer RandomKeyStreamer
 
@@ -46,9 +50,36 @@ func main() {
             log.Fatal(err)
         }
 
-        for i := int64(0); i < numSamples; i++ {
-            sc.AddBytes(streamer.RandomKeyStream(streamLength))
+        sc := NewStreamCounter(streamLength)
+
+        var wg sync.WaitGroup
+
+        sampleStream := make(chan []byte, 1000)
+
+        // generate a goroutine for each CPU
+        for i := 0; i < runtime.NumCPU(); i++ {
+
+            wg.Add(1)
+
+            go func() {
+
+                defer wg.Done()
+
+                // loop through our share of the samples
+                for j := int64(0); j <= ( numSamples / int64(runtime.NumCPU()) ); j++ {
+                    sampleStream <- streamer.RandomKeyStream(streamLength)
+                }
+            }()
         }
+
+        // read our samples from the channel
+        for i := int64(0); i < numSamples; i++ {
+            sc.AddBytes(<-sampleStream)
+        }
+
+        // wait for the goroutines to generate all of their samples
+        wg.Wait()
+        close(sampleStream)
 
         // print out the data as either html charts or json
         page := NewChartPage(sc)
