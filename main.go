@@ -12,22 +12,26 @@ type RandomKeyStreamer interface {
 
 func main() {
 
-    app := cli.App("stream-bias", "chart potential biases in stream cipher keystreams")
+    app := cli.App("unfair", "chart potential biases in stream cipher keystreams")
 
-    app.Command("generate" func() {
+    format := app.StringOpt("F format", "html", "output format (html or json)")
+
+    app.Action = func() {
         sc := NewStreamCounter(256)
 
         streamer := NewRc4Streamer()
 
-        for i := 0; i < 1000000; i++ {
+        for i := 0; i < 1000; i++ {
             sc.AddBytes(streamer.RandomKeyStream(256))
         }
 
         page := NewChartPage(sc)
 
-        page.PrintHtml()
+        switch *format {
+            case "html": page.PrintHtml()
+            case "json": page.PrintJson()
+        }
     }
 
     app.Run(os.Args)
 }
-

@@ -10,7 +10,6 @@ type StreamCounter struct {
     Count   [][256]int64 // each position has a 256 length slice
     Probability [][256]float32
     Samples int64
-    Streamer    *RandomKeyStreamer
 }
 
 func NewStreamCounter(length int) *StreamCounter {

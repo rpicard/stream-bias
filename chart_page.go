@@ -5,6 +5,7 @@ import (
     "encoding/json"
     "log"
     "os"
+    "fmt"
 )
 
 type ChartPage struct {
@@ -34,6 +35,12 @@ func (page *ChartPage) PrintHtml() {
         log.Fatal(err)
     }
 }
+
+// just print the JSON for this page
+func (page *ChartPage) PrintJson() {
+    fmt.Println(page.JsonData)
+}
+
 
 const BiasChartsTemplate = `
 <!DOCTYPE html>
