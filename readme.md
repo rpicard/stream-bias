@@ -4,6 +4,18 @@ This tool generates a bunch of keystream data from stream ciphers and tracks the
 
 The interface and such is still in flux, but to test a new cipher you will basically add a *ciphername*\_streamer.go file which will have a type for CipherName and implement the interface in main.go.
 
+```
+Usage: unfair -c [-f] [-s] [-l]
+
+chart potential biases in stream cipher keystreams
+
+Options:
+  -f, --format="html"    output format (html or json)
+  -c, --cipher=""        which cipher are we testing?
+  -s, --samples="1000"   how many samples should we take?
+  -l, --length="256"     how many positions in the keystream do we care about?
+```
+
 ## TODO
 
 * [ ] Make the sample generation parallel, and have it take advantage of all cores on the machine.
