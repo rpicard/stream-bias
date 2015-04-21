@@ -18,7 +18,7 @@ func NewRc4Streamer() *Rc4Streamer {
 func (sc *Rc4Streamer) RandomKeyStream(numBytes int) []byte {
 
 	// hard-coding the key length for now, probably should be an option
-	randomKey := make([]byte, 128)
+	randomKey := make([]byte, 16)
 
 	_, err := rand.Read(randomKey)
 
