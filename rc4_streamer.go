@@ -1,44 +1,43 @@
 package main
 
 import (
-    "crypto/rc4"
-    "crypto/rand"
-    "log"
+	"crypto/rand"
+	"crypto/rc4"
+	"log"
 )
 
 type Rc4Streamer struct {
-    Name    string
+	Name string
 }
 
 func NewRc4Streamer() *Rc4Streamer {
-    return &Rc4Streamer{Name: "RC4"}
+	return &Rc4Streamer{Name: "RC4"}
 }
 
 // generate a random key and return the first numBytes of keystream
 func (sc *Rc4Streamer) RandomKeyStream(numBytes int) []byte {
 
-    // hard-coding the key length for now, probably should be an option
-    randomKey := make([]byte, 128)
+	// hard-coding the key length for now, probably should be an option
+	randomKey := make([]byte, 128)
 
-    _, err := rand.Read(randomKey)
+	_, err := rand.Read(randomKey)
 
-    if err != nil {
-        log.Fatal(err)
-    }
+	if err != nil {
+		log.Fatal(err)
+	}
 
-    cipher, err := rc4.NewCipher(randomKey)
+	cipher, err := rc4.NewCipher(randomKey)
 
-    if err != nil {
-        log.Fatal(err)
-    }
+	if err != nil {
+		log.Fatal(err)
+	}
 
-    // make a buffer of zeroes to XOR against the keystream so we can
-    // get the actual keystream
-    zeroBuffer := make([]byte, numBytes)
-    keyStream := make([]byte, numBytes)
+	// make a buffer of zeroes to XOR against the keystream so we can
+	// get the actual keystream
+	zeroBuffer := make([]byte, numBytes)
+	keyStream := make([]byte, numBytes)
 
-    cipher.XORKeyStream(keyStream, zeroBuffer)
+	cipher.XORKeyStream(keyStream, zeroBuffer)
 
-    return keyStream
+	return keyStream
 }
-

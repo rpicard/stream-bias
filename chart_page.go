@@ -1,46 +1,45 @@
 package main
 
 import (
-    "text/template"
-    "encoding/json"
-    "log"
-    "os"
-    "fmt"
+	"encoding/json"
+	"fmt"
+	"log"
+	"os"
+	"text/template"
 )
 
 type ChartPage struct {
-    JsonData    string
+	JsonData string
 }
 
 func NewChartPage(counter *StreamCounter) *ChartPage {
 
-    // marshal the StreamCounter into JSON
-    jsn, err := json.Marshal(counter)
+	// marshal the StreamCounter into JSON
+	jsn, err := json.Marshal(counter)
 
-    if err != nil {
-        log.Fatal(err)
-    }
+	if err != nil {
+		log.Fatal(err)
+	}
 
-    return &ChartPage{JsonData: string(jsn)}
+	return &ChartPage{JsonData: string(jsn)}
 }
 
 // print the generated HTML for this page
 func (page *ChartPage) PrintHtml() {
 
-    tmpl := template.Must(template.New("bias-charts").Parse(BiasChartsTemplate))
+	tmpl := template.Must(template.New("bias-charts").Parse(BiasChartsTemplate))
 
-    err := tmpl.Execute(os.Stdout, page)
+	err := tmpl.Execute(os.Stdout, page)
 
-    if err != nil {
-        log.Fatal(err)
-    }
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 // just print the JSON for this page
 func (page *ChartPage) PrintJson() {
-    fmt.Println(page.JsonData)
+	fmt.Println(page.JsonData)
 }
-
 
 const BiasChartsTemplate = `
 <!DOCTYPE html>
