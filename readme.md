@@ -5,7 +5,7 @@ The interface and such is still in flux, but to test a new cipher you will basic
 ## TODO
 
 * [ ] Make the sample generation parallel, and have it take advantage of all cores on the machine.
-* [ ] Make it work with multiple different ciphers, letting the use select which to use at run time.
+* [ ] Make it work with multiple different ciphers, letting the user select which to use at run time.
 * [ ] Polish up the information on the generated chart page.
 * [ ] Add the option to export / import the generated data rather than generating it each time
 * [X] Give the tool a nice little CLI to set options like random key length, number of samples, etc.
