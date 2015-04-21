@@ -27,7 +27,7 @@ func main() {
     samples := app.StringOpt("s samples", "1000", "how many samples should we take?")
     length := app.StringOpt("l length", "256", "how many positions in the keystream do we care about?")
 
-    app.Spec = "--cipher [--format] [--samples] [--length]"
+    app.Spec = "-c [-f] [-s] [-l]"
 
     app.Action = func() {
 
