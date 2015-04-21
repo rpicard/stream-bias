@@ -4,7 +4,7 @@ The interface and such is still in flux, but to test a new cipher you will basic
 
 ## TODO
 
-* [ ] Make some optimizations to the cipher stream data generation so it's a little faster. We'll be getting 2^44 sample keystreams, so if we can use all the speed we can get.
+* [ ] Make the sample generation parallel, and have it take advantage of all cores on the machine.
 * [ ] Make it work with multiple different ciphers, letting the use select which to use at run time.
 * [ ] Polish up the information on the generated chart page.
 * [ ] Add the option to export / import the generated data rather than generating it each time
