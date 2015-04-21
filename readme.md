@@ -1,3 +1,5 @@
+# unfair
+
 This tool generates a bunch of keystream data from stream ciphers and tracks the distribution of bytes at each position. The idea is to catch biases like those shown in RC4 here: http://www.isg.rhul.ac.uk/tls/biases.pdf
 
 The interface and such is still in flux, but to test a new cipher you will basically add a *ciphername*\_streamer.go file which will have a type for CipherName and implement the interface in main.go.
