@@ -36,6 +36,7 @@ func main() {
         // add new ciphers here
         switch *cipher {
             case "rc4": streamer = NewRc4Streamer()
+            case "hc128": streamer = NewHc128Streamer()
             default: log.Fatal(errors.New("I do not know that cipher."))
         }
 
