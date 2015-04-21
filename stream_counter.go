@@ -49,3 +49,24 @@ func (sc *StreamCounter) AddBytes(bytes []byte) {
 		sc.Probability[position][value] = float32(sc.Count[position][value]) / float32(sc.Samples)
 	}
 }
+
+func (dst *StreamCounter) AddCounter(src *StreamCounter) {
+
+	// make sure the two counters have the same length
+	if dst.Length != src.Length {
+		log.Fatal("AddCounter: two counters have different lengths")
+	}
+
+	// increase the sample count
+	newSampleCount := dst.Samples + src.Samples
+
+	for i := 0; i < dst.Length; i++ {
+		for j := 0; j < 256; j++ {
+			dst.Count[i][j] += src.Count[i][j]
+			dst.Probability[i][j] = float32(dst.Count[i][j]) / float32(newSampleCount)
+		}
+	}
+
+	// set the new sample count
+	dst.Samples = newSampleCount
+}

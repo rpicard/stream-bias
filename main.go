@@ -54,34 +54,39 @@ func main() {
 			log.Fatal(err)
 		}
 
-		sc := NewStreamCounter(streamLength)
-
 		var wg sync.WaitGroup
 
-		sampleStream := make(chan []byte, 1000)
+		counters := make(chan *StreamCounter, 100)
 
 		// generate a goroutine for each CPU
 		for i := 0; i < runtime.NumCPU(); i++ {
 			wg.Add(1)
 
 			go func() {
+
 				defer wg.Done()
+
+				sc := NewStreamCounter(streamLength)
 
 				// loop through our share of the samples
 				for j := int64(0); j <= (numSamples / int64(runtime.NumCPU())); j++ {
-					sampleStream <- streamer.RandomKeyStream(streamLength)
+					sc.AddBytes(streamer.RandomKeyStream(streamLength))
 				}
+
+				counters <- sc
 			}()
 		}
 
+		sc := NewStreamCounter(streamLength)
+
 		// read our samples from the channel
-		for i := int64(0); i < numSamples; i++ {
-			sc.AddBytes(<-sampleStream)
+		for i := 0; i < runtime.NumCPU(); i++ {
+			sc.AddCounter(<-counters)
 		}
 
 		// wait for the goroutines to generate all of their samples
 		wg.Wait()
-		close(sampleStream)
+		close(counters)
 
 		// print out the data as either html charts or json
 		page := NewChartPage(sc)
