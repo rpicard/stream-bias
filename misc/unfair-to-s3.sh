@@ -29,3 +29,5 @@ $instance = `curl http://169.254.169.254/latest/meta-data/instance-id`
 #    like any other instance
 
 /usr/local/bin/kill_instance $instance
+
+# 4. oh fuck there really is an after life
