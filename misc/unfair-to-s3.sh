@@ -30,4 +30,4 @@ $instance = `curl http://169.254.169.254/latest/meta-data/instance-id`
 
 /usr/local/bin/kill_instance $instance
 
-# 4. oh fuck there really is an after life
+# 4. oh fuck there really is an afterlife
