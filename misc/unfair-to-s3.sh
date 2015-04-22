@@ -22,12 +22,12 @@ $instance = `curl http://169.254.169.254/latest/meta-data/instance-id`
 #    creds are in the AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY
 #    environment variables
 
-/usr/local/bin/s3put -b "unfair-test1" "${instance}-unfair.json"
+/usr/bin/s3put -b "unfair-test1" "${instance}-unfair.json"
 
 # 3. use kill_instance to commit suicide
 #    pretty sure this should work with spot instances and all just
 #    like any other instance
 
-/usr/local/bin/kill_instance $instance
+/usr/bin/kill_instance $instance
 
 # 4. oh fuck there really is an afterlife
