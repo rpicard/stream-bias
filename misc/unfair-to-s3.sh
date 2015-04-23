@@ -8,7 +8,7 @@
 
 # get the instance ID
 
-$instance = `curl http://169.254.169.254/latest/meta-data/instance-id`
+instance=$(curl http://169.254.169.254/latest/meta-data/instance-id)
 
 # 1. run unfair for 100 000 000 samples
 #    this should take about 20 minutes on a t1.micro instances
