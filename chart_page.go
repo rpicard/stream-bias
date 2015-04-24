@@ -115,8 +115,12 @@ for (var i = 0; i < DATA.length; i++) {
         .domain([0, DATA[i].length])
         .range([0, w]);
 
+    // hardcoding the scale for now. should find a way to figure a good one dynamically
+    var max = 0.00395;
+    var min = 0.003878;
+
     var y = d3.scale.linear()
-        .domain([0, d3.max(DATA[i])])
+        .domain([min, max])
         .range([h, 0]);
 
     var line = d3.svg.line()
