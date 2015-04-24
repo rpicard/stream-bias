@@ -40,6 +40,8 @@ func main() {
                 streamer = NewRc4Streamer()
             case "hc128":
                 streamer = NewHc128Streamer()
+            case "sosemanuk":
+                streamer = NewSosemanukStreamer()
             default:
                 log.Fatal(errors.New("I do not know that cipher."))
             }
