@@ -8,14 +8,16 @@
 
 # get the instance ID
 
-instance=$(curl http://169.254.169.254/latest/meta-data/instance-id)
+instance=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
+AWS_ACCESS_KEY_ID=$(curl -s http://169.254.169.254/latest/meta-data/iam/security-credentials/unfair-ec2 | jq '.["AccessKeyId"]')
+AWS_SECRET_ACCESS_KEY=$(curl -s http://169.254.169.254/latest/meta-data/iam/security-credentials/unfair-ec2 | jq '.["SecretAccessKey"]')
 
 # 1. run unfair for 100 000 000 samples
 #    this should take about 20 minutes on a t1.micro instances
 #    eventually going to raise this, but for now we will stick
 #    to a relatively small number of samples
 
-/home/ec2-user/unfair -c rc4 -f json -s 100000000 > "${instance}-unfair.json"
+/usr/local/bin/unfair -c rc4 -f json -s 100000000 > "${instance}-unfair.json"
 
 # 2. use s3put to stick the output in an s3 bucket
 #    manually making the s3 bucket called "unfair-test1" for now
